@@ -22,3 +22,4 @@ class StrengthSet:
     reps: int
     weight_kg: float
     rir: float | None = None
+    source: str = "user_import"

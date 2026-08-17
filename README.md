@@ -20,7 +20,9 @@ The currently listed Fitness AI Connector is a useful proof of demand, but its p
 
 ## Status
 
-This repository is a working pre-alpha scaffold, not yet a public ChatGPT app.
+This repository is a working pre-alpha with a validated first-party plugin
+package. It is not yet connected to a ChatGPT MCP registration or published in
+the public plugin directory.
 
 Implemented:
 
@@ -28,6 +30,8 @@ Implemented:
 - CSV import for health and strength data;
 - deterministic readiness and strength-progression calculations;
 - MCP tools with explicit safety annotations;
+- a first-party plugin manifest and packaged Strength Coach skill;
+- source-aware strength identity with legacy database migration;
 - unit tests for the dependency-free analytics core.
 
 Not yet implemented:
@@ -37,6 +41,9 @@ Not yet implemented:
 - hosted multi-user authentication;
 - workout publication to Garmin;
 - public HTTPS deployment and ChatGPT directory submission.
+
+The implementation and connection roadmap is in
+[docs/FIRST_PARTY_PLUGIN.md](docs/FIRST_PARTY_PLUGIN.md).
 
 ## Quick start
 
@@ -50,11 +57,34 @@ pip install -e .
 openwear-coach
 ```
 
+PowerShell on Windows:
+
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -e .
+openwear-coach
+```
+
 The Streamable HTTP MCP endpoint is `http://127.0.0.1:8000/mcp` by default. Override the local database with:
 
 ```bash
 export OPENWEAR_DB=/absolute/path/to/openwear.db
 ```
+
+PowerShell equivalent:
+
+```powershell
+$env:OPENWEAR_DB = "$env:LOCALAPPDATA\OpenWearCoach\data.db"
+```
+
+## First-party ChatGPT plugin
+
+The plugin source is in `plugins/openwear-coach/`. It contains OpenWear's own
+manifest and coaching skill; it does not install or call another fitness
+plugin. The MCP mapping is intentionally added only after the local OpenWear
+server is registered in ChatGPT developer mode, because ChatGPT generates a
+user-specific connection ID during that one-time setup.
 
 For development with the MCP Inspector:
 

@@ -137,18 +137,19 @@ def get_strength_sessions(start_date: str, end_date: str) -> dict[str, Any]:
     end = _iso_date(end_date)
     if start > end:
         raise ValueError("start_date must not be after end_date")
-    grouped: dict[tuple[str, str], list[StrengthSet]] = defaultdict(list)
+    grouped: dict[tuple[str, str, str], list[StrengthSet]] = defaultdict(list)
     for item in db.strength_sets(start, end):
-        grouped[(item.date, item.session_id)].append(item)
+        grouped[(item.date, item.source, item.session_id)].append(item)
 
     sessions: list[dict[str, Any]] = []
-    for (session_date, session_id), items in sorted(grouped.items()):
+    for (session_date, source, session_id), items in sorted(grouped.items()):
         by_exercise: dict[str, list[StrengthSet]] = defaultdict(list)
         for item in items:
             by_exercise[item.exercise].append(item)
         sessions.append(
             {
                 "date": session_date,
+                "source": source,
                 "session_id": session_id,
                 "summary": summarize_strength_sets(items),
                 "exercises": {
@@ -171,16 +172,17 @@ def get_strength_progress(
     if start > end:
         raise ValueError("start_date must not be after end_date")
     exercise_key = exercise.strip().lower().replace(" ", "_")
-    grouped: dict[tuple[str, str], list[StrengthSet]] = defaultdict(list)
+    grouped: dict[tuple[str, str, str], list[StrengthSet]] = defaultdict(list)
     for item in db.strength_sets(start, end, exercise_key):
-        grouped[(item.date, item.session_id)].append(item)
+        grouped[(item.date, item.source, item.session_id)].append(item)
     points = [
         {
             "date": session_date,
+            "source": source,
             "session_id": session_id,
             **summarize_strength_sets(items),
         }
-        for (session_date, session_id), items in sorted(grouped.items())
+        for (session_date, source, session_id), items in sorted(grouped.items())
     ]
     return {
         "exercise": exercise_key,

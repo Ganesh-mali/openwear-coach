@@ -1,0 +1,22 @@
+{
+  "name": "openwear-coach",
+  "version": "0.1.0",
+  "description": "Local-first strength and recovery coaching for user-owned wearable data.",
+  "author": {
+    "name": "OpenWear Coach project"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "OpenWear Coach",
+    "shortDescription": "Coach strength and recovery from local wearable data.",
+    "longDescription": "Provides grounded strength and recovery coaching guidance for user-owned OpenWear Coach data.",
+    "developerName": "OpenWear Coach project",
+    "category": "Health & Fitness",
+    "capabilities": [
+      "Local data coaching"
+    ],
+    "defaultPrompt": [
+      "Review my OpenWear data and suggest today's training."
+    ]
+  }
+}
