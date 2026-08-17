@@ -25,6 +25,7 @@ dist/
 htmlcov/
 
 # OpenWear Coach local data
+.local/
 *.db
 *.db-journal
 *.db-shm

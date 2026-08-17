@@ -1,7 +1,7 @@
 # First-party OpenWear Coach plugin plan
 
-OpenWear Coach will be its own ChatGPT plugin. It does not depend on Fitness AI
-Connector, LiftTrack, or another fitness-data plugin.
+OpenWear Coach will be its own local-first plugin and MCP toolset. It does not
+depend on Fitness AI Connector, LiftTrack, or another fitness-data plugin.
 
 ## Target personal flow
 
@@ -28,15 +28,32 @@ to the OpenWear adapter. Garmin API access requires acceptance into the
 - A packaged Strength Coach skill with explicit non-medical guardrails.
 - A durable strength-set identity that separates dates and data sources and
   migrates the original pre-alpha schema without dropping records.
-- A verified local Streamable HTTP MCP endpoint at
-  `http://127.0.0.1:8000/mcp`.
+- Verified STDIO and loopback Streamable HTTP MCP transports.
+- A project-scoped `.codex/config.toml` that starts the preferred STDIO server,
+  opens no port, and initially exposes only `get_data_coverage`.
+- A fail-closed HTTP guard that rejects LAN, wildcard, hostname, and privileged
+  bindings.
+
+## No-extra-cost desktop route
+
+For the current Windows laptop, ChatGPT desktop and Codex should start OpenWear
+directly over STDIO from the checked-in project configuration. It uses an
+isolated synthetic SQLite database and does not require a listening port,
+public endpoint, OpenAI Platform API key, Secure MCP Tunnel, Garmin
+authorization, or personal health data.
+
+After opening this trusted project, restart the desktop host and first call
+only `get_data_coverage`. The loopback HTTP endpoint remains available solely
+for manual development through `scripts/start-local.ps1`; it is not the
+preferred personal route. See `SECURITY.md` for the threat model and residual
+risks.
 
 ## What remains
 
-1. Register the local MCP server in ChatGPT developer mode and obtain the
-   user-specific `plugin_asdk_app...` connection ID.
-2. Add that mapping locally as `.app.json` and expose the plugin through a local
-   marketplace. Do not commit the user-specific connection ID.
+1. Restart the desktop host and confirm the project-scoped STDIO server appears
+   under `/mcp`; call only `get_data_coverage` against the empty database.
+2. Optionally add the existing skills-only package to a local marketplace and
+   start a new task with the coaching skill.
 3. Apply for Garmin Activity and Health API access and implement OAuth, consent,
    revocation, push ingestion, reconciliation, and deletion.
 4. Add a provider adapter and normalized Garmin fixtures before using personal
@@ -45,14 +62,15 @@ to the OpenWear adapter. Garmin API access requires acceptance into the
 5. Run a Venu 4 verification using synthetic data first, then a minimal
    read-only personal dataset after authorization.
 
-## Private development connection
+## Deferred web connection
 
-For the current Windows laptop, run OpenWear locally and register its MCP URL in
-ChatGPT developer mode. If a ChatGPT surface cannot reach the loopback endpoint,
-OpenAI's [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels)
-is the private, outbound-only development option. It is for private testing, not
-public plugin publication, and requires an OpenAI Platform tunnel identity and
-runtime API key.
+The ChatGPT web developer-mode form rejects a plain loopback URL. OpenAI's
+[Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels)
+would bridge it privately, but requires a Platform tunnel identity and runtime
+API key. The user requires no additional charges, so this web route is deferred:
+do not create a runtime key, run a tunnel client, add credits, or enable
+auto-reload. If the user later permits a separately billed Platform route, first
+confirm pricing and authorization at that time.
 
 ## Approval-free fallback
 

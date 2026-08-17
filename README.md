@@ -78,6 +78,22 @@ PowerShell equivalent:
 $env:OPENWEAR_DB = "$env:LOCALAPPDATA\OpenWearCoach\data.db"
 ```
 
+The checked-in `.codex/config.toml` is the preferred zero-cost setup for the
+ChatGPT desktop/Codex host. It starts OpenWear through STDIO, opens no network
+port, stores data under the Git-ignored `.local/` directory, and initially
+enables only the read-only `get_data_coverage` tool. Restart the desktop host
+after opening this trusted project to load the server.
+
+For manual HTTP development and MCP Inspector testing, use:
+
+```powershell
+.\scripts\start-local.ps1
+```
+
+This fallback launcher also uses `.local/` and binds only to `127.0.0.1`. The
+server refuses LAN, wildcard, and hostname bindings because network
+authentication is not implemented.
+
 ## First-party ChatGPT plugin
 
 The plugin source is in `plugins/openwear-coach/`. It contains OpenWear's own

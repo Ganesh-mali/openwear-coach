@@ -19,6 +19,11 @@ from openwear_coach.analytics import (
 )
 from openwear_coach.importers import parse_health_csv, parse_strength_csv
 from openwear_coach.models import StrengthSet
+from openwear_coach.security import (
+    require_local_transport,
+    require_loopback_host,
+    require_tcp_port,
+)
 from openwear_coach.storage import Database
 
 
@@ -254,8 +259,15 @@ def export_user_data(start_date: str, end_date: str) -> dict[str, Any]:
 
 
 def main() -> None:
-    host = os.environ.get("OPENWEAR_HOST", "127.0.0.1")
-    port = int(os.environ.get("OPENWEAR_PORT", "8000"))
+    transport = require_local_transport(
+        os.environ.get("OPENWEAR_TRANSPORT", "streamable-http")
+    )
+    if transport == "stdio":
+        mcp.run("stdio")
+        return
+
+    host = require_loopback_host(os.environ.get("OPENWEAR_HOST", "127.0.0.1"))
+    port = require_tcp_port(os.environ.get("OPENWEAR_PORT", "8000"))
     mcp.run(
         "streamable-http",
         host=host,
