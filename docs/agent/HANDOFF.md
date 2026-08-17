@@ -46,9 +46,10 @@ Finish the user's first-party OpenWear Coach plugin and automatic Garmin path wi
 
 1. Run `git -c safe.directory=C:/Users/GANESH/open_source_projects/openwear-coach status -sb`.
 2. Read `updates/2026-08-17T1945Z-local-stdio-security.md`.
-3. Restart the desktop host so it loads `.codex/config.toml` and starts
-   `openwear_local` over STDIO.
-4. Confirm the server under `/mcp` and approve only the read-only
+3. Restart the desktop host, then create a new task inside this trusted project.
+   Reopening a task created before the config change retains its old MCP
+   inventory.
+4. Confirm `openwear_local` under `/mcp` in the new task and approve only the read-only
    `get_data_coverage` proof call. Keep personal health data out of the proof.
 5. Optionally install the skills-only package through a local marketplace; it
    has no MCP mapping yet and must not fabricate a connection ID.
@@ -72,8 +73,9 @@ Finish the user's first-party OpenWear Coach plugin and automatic Garmin path wi
 
 ## Blocker or decision needed
 
-The local server entry is implemented and validated, but the desktop host must
-be restarted before it can load the new project-scoped configuration. A web
-plugin mapping remains deferred because it needs a Platform runtime key and
+The local server entry is implemented, validated, and reported as enabled by
+the bundled Codex CLI. The remaining proof requires a new desktop task created
+after restart; reopening the existing task preserves its old MCP inventory. A
+web plugin mapping remains deferred because it needs a Platform runtime key and
 pricing assurance. Garmin automatic sync remains blocked on Developer Program
 approval and credentials.

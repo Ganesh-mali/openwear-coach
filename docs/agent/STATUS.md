@@ -61,7 +61,8 @@ Working pre-alpha for a local-first, vendor-neutral wearable-data MCP server and
 
 ## Next three actions
 
-1. Restart the desktop host so it loads `.codex/config.toml`, then confirm
-   `openwear_local` under `/mcp` and run only `get_data_coverage`.
+1. After restarting the desktop host, create a new task inside this project,
+   then confirm `openwear_local` under `/mcp` and run only
+   `get_data_coverage`.
 2. Optionally install the skills-only package from a local marketplace.
 3. Prepare the official Garmin Developer Program application and a provider adapter with synthetic fixtures while approval is pending.

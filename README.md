@@ -81,8 +81,10 @@ $env:OPENWEAR_DB = "$env:LOCALAPPDATA\OpenWearCoach\data.db"
 The checked-in `.codex/config.toml` is the preferred zero-cost setup for the
 ChatGPT desktop/Codex host. It starts OpenWear through STDIO, opens no network
 port, stores data under the Git-ignored `.local/` directory, and initially
-enables only the read-only `get_data_coverage` tool. Restart the desktop host
-after opening this trusted project to load the server.
+enables only the read-only `get_data_coverage` tool. After restarting the
+desktop host, create a new task inside this trusted project; an already-open
+task keeps its original MCP inventory. Enter `/mcp` in the new task to confirm
+`openwear_local`.
 
 For manual HTTP development and MCP Inspector testing, use:
 

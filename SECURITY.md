@@ -15,8 +15,10 @@ MCP STDIO. This is the safest supported personal setup because it:
 - exposes only `get_data_coverage` to the desktop host initially; and
 - prompts before the permitted tool call.
 
-Restart the ChatGPT desktop/Codex host after opening this trusted project to
-load the configuration. Expand `enabled_tools` only after reviewing each tool.
+Restart the ChatGPT desktop/Codex host, then create a new task inside this
+trusted project to load the configuration. Reopening a task that existed before
+the configuration change does not rebuild that task's MCP inventory. Expand
+`enabled_tools` only after reviewing each tool.
 
 ## HTTP development fallback
 

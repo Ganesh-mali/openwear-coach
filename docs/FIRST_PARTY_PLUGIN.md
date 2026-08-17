@@ -42,16 +42,19 @@ isolated synthetic SQLite database and does not require a listening port,
 public endpoint, OpenAI Platform API key, Secure MCP Tunnel, Garmin
 authorization, or personal health data.
 
-After opening this trusted project, restart the desktop host and first call
-only `get_data_coverage`. The loopback HTTP endpoint remains available solely
-for manual development through `scripts/start-local.ps1`; it is not the
-preferred personal route. See `SECURITY.md` for the threat model and residual
-risks.
+After opening this trusted project, restart the desktop host and create a new
+task in the project. Confirm `openwear_local` under `/mcp`, then first call only
+`get_data_coverage`. Reopening a task created before the configuration change
+does not rebuild its MCP inventory. The loopback HTTP endpoint remains
+available solely for manual development through `scripts/start-local.ps1`; it
+is not the preferred personal route. See `SECURITY.md` for the threat model and
+residual risks.
 
 ## What remains
 
-1. Restart the desktop host and confirm the project-scoped STDIO server appears
-   under `/mcp`; call only `get_data_coverage` against the empty database.
+1. Restart the desktop host, create a new task inside this project, and confirm
+   the project-scoped STDIO server under `/mcp`; call only
+   `get_data_coverage` against the empty database.
 2. Optionally add the existing skills-only package to a local marketplace and
    start a new task with the coaching skill.
 3. Apply for Garmin Activity and Health API access and implement OAuth, consent,
