@@ -12,8 +12,9 @@ MCP STDIO. This is the safest supported personal setup because it:
 - opens no TCP port;
 - requires no tunnel, public URL, Platform API key, or extra service;
 - stores the SQLite database in the Git-ignored `.local/` directory;
-- exposes only `get_data_coverage` to the desktop host initially; and
-- prompts before the permitted tool call.
+- exposes only coverage, strength recording, strength history, and exercise
+  progress to the desktop host; and
+- prompts before the write tool records a workout.
 
 Restart the ChatGPT desktop/Codex host, then create a new task inside this
 trusted project to load the configuration. Reopening a task that existed before

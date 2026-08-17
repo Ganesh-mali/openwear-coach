@@ -37,20 +37,22 @@ Finish the user's first-party OpenWear Coach plugin and automatic Garmin path wi
   data. Delete it only with the user's explicit approval.
 - Recorded the user's hard no-extra-charge constraint. The selected proof is a
   project-scoped STDIO MCP process with synthetic data and no listening port.
-- Added `.codex/config.toml` with only `get_data_coverage` enabled and prompt
-  approval, plus a fail-closed loopback-only HTTP development fallback.
+- Added `.codex/config.toml` with coverage and strength
+  record/history/progress enabled, write approval, and a fail-closed
+  loopback-only HTTP development fallback.
 - Added `SECURITY.md`; verified HTTP rejects wildcard/LAN serving, invalid Host
   headers, and invalid Origin headers.
 
 ## Next exact action
 
 1. Run `git -c safe.directory=C:/Users/GANESH/open_source_projects/openwear-coach status -sb`.
-2. Read `updates/2026-08-17T1945Z-local-stdio-security.md`.
+2. Read `updates/2026-08-17T2015Z-today-workout-mode.md`.
 3. Restart the desktop host, then create a new task inside this trusted project.
    Reopening a task created before the config change retains its old MCP
    inventory.
-4. Confirm `openwear_local` under `/mcp` in the new task and approve only the read-only
-   `get_data_coverage` proof call. Keep personal health data out of the proof.
+4. Submit `/mcp`, confirm `openwear_local`, check coverage, and follow
+   `docs/TODAY_WORKOUT.md`. Approve `record_strength_session` only after
+   reviewing the exact sets.
 5. Optionally install the skills-only package through a local marketplace; it
    has no MCP mapping yet and must not fabricate a connection ID.
 6. Prepare `PROVIDER-001` and the Garmin Developer Program application in

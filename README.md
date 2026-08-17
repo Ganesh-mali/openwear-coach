@@ -83,8 +83,9 @@ ChatGPT desktop/Codex host. It starts OpenWear through STDIO, opens no network
 port, stores data under the Git-ignored `.local/` directory, and initially
 enables only the read-only `get_data_coverage` tool. After restarting the
 desktop host, create a new task inside this trusted project; an already-open
-task keeps its original MCP inventory. Enter `/mcp` in the new task to confirm
-`openwear_local`.
+task keeps its original MCP inventory. Enter `/mcp` and submit it in the new
+task to confirm `openwear_local`. See `docs/TODAY_WORKOUT.md` for the current
+strength-session workflow.
 
 For manual HTTP development and MCP Inspector testing, use:
 

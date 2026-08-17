@@ -25,8 +25,8 @@ Working pre-alpha for a local-first, vendor-neutral wearable-data MCP server and
 - Source-aware strength-set identity and transactional legacy-schema migration
 - Windows-safe SQLite connection cleanup and package-safe MCP Inspector imports
 - User-facing first-party architecture and Windows setup guide
-- A no-extra-cost project MCP configuration that opens no port and initially
-  exposes only `get_data_coverage`
+- A no-extra-cost project MCP configuration that opens no port and exposes only
+  coverage plus strength record/history/progress tools, with write approval
 - Fail-closed HTTP bind validation and a documented local threat model
 
 ## Verified
@@ -62,7 +62,7 @@ Working pre-alpha for a local-first, vendor-neutral wearable-data MCP server and
 ## Next three actions
 
 1. After restarting the desktop host, create a new task inside this project,
-   then confirm `openwear_local` under `/mcp` and run only
-   `get_data_coverage`.
+   submit `/mcp`, confirm `openwear_local`, check coverage, and record/review a
+   strength session using `docs/TODAY_WORKOUT.md`.
 2. Optionally install the skills-only package from a local marketplace.
 3. Prepare the official Garmin Developer Program application and a provider adapter with synthetic fixtures while approval is pending.
