@@ -8,6 +8,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from statistics import median
 
+from .health_metrics import normalize_health_sample, normalize_health_source
 from .models import HealthSample, StrengthSet
 
 
@@ -152,7 +153,12 @@ class Database:
     def upsert_health_samples(
         self, samples: Iterable[HealthSample], source: str = "user_import"
     ) -> int:
-        rows = [(s.date, s.metric, s.value, s.unit, source) for s in samples]
+        clean_source = normalize_health_source(source)
+        normalized = [normalize_health_sample(sample) for sample in samples]
+        rows = [
+            (sample.date, sample.metric, sample.value, sample.unit, clean_source)
+            for sample in normalized
+        ]
         with self.connection() as connection:
             connection.executemany(
                 """
@@ -228,15 +234,26 @@ class Database:
                     "SELECT DISTINCT metric FROM health_samples ORDER BY metric"
                 )
             ]
+            health_sources = [
+                row["source"]
+                for row in connection.execute(
+                    "SELECT DISTINCT source FROM health_samples ORDER BY source"
+                )
+            ]
         return {
             "health": dict(health),
             "strength": dict(strength),
             "health_metrics": metrics,
+            "health_sources": health_sources,
             "storage": "local_sqlite",
         }
 
     def health_points(
-        self, start_date: str, end_date: str, metrics: Sequence[str] | None = None
+        self,
+        start_date: str,
+        end_date: str,
+        metrics: Sequence[str] | None = None,
+        source: str | None = None,
     ) -> list[dict[str, object]]:
         sql = """
             SELECT date, metric, value, unit, source
@@ -248,36 +265,45 @@ class Database:
             placeholders = ",".join("?" for _ in metrics)
             sql += f" AND metric IN ({placeholders})"
             params.extend(metrics)
+        if source is not None:
+            sql += " AND source = ?"
+            params.append(normalize_health_source(source))
         sql += " ORDER BY metric, date"
         with self.connection() as connection:
             return [dict(row) for row in connection.execute(sql, params)]
 
-    def health_value(self, date: str, metric: str) -> float | None:
+    def health_value(
+        self, date: str, metric: str, source: str = "user_import"
+    ) -> float | None:
         with self.connection() as connection:
             row = connection.execute(
                 """
                 SELECT value FROM health_samples
-                WHERE date = ? AND metric = ?
-                ORDER BY source LIMIT 1
+                WHERE date = ? AND metric = ? AND source = ?
                 """,
-                (date, metric),
+                (date, metric, normalize_health_source(source)),
             ).fetchone()
         return None if row is None else float(row["value"])
 
     def metric_baseline(
-        self, metric: str, on_or_before: str, limit: int = 28
+        self,
+        metric: str,
+        before_date: str,
+        source: str = "user_import",
+        limit: int = 28,
+        minimum_samples: int = 7,
     ) -> float | None:
         with self.connection() as connection:
             rows = connection.execute(
                 """
                 SELECT value FROM health_samples
-                WHERE metric = ? AND date <= ?
+                WHERE metric = ? AND date < ? AND source = ?
                 ORDER BY date DESC LIMIT ?
                 """,
-                (metric, on_or_before, limit),
+                (metric, before_date, normalize_health_source(source), limit),
             ).fetchall()
         values = [float(row["value"]) for row in rows]
-        return median(values) if values else None
+        return median(values) if len(values) >= minimum_samples else None
 
     def strength_sets(
         self, start_date: str, end_date: str, exercise: str | None = None

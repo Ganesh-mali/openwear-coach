@@ -6,6 +6,7 @@ import csv
 import io
 from datetime import date
 
+from .health_metrics import normalize_health_sample
 from .models import HealthSample, StrengthSet
 
 
@@ -30,11 +31,13 @@ def parse_health_csv(csv_text: str) -> list[HealthSample]:
             if not metric or not unit:
                 raise ValueError("metric and unit must be non-empty")
             samples.append(
-                HealthSample(
-                    date=_validate_date(row["date"]),
-                    metric=metric,
-                    value=float(row["value"]),
-                    unit=unit,
+                normalize_health_sample(
+                    HealthSample(
+                        date=_validate_date(row["date"]),
+                        metric=metric,
+                        value=float(row["value"]),
+                        unit=unit,
+                    )
                 )
             )
         except (TypeError, ValueError) as exc:

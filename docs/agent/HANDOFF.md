@@ -18,7 +18,7 @@ Finish the user's first-party OpenWear Coach plugin and automatic Garmin path wi
 
 - Imported and published the pre-alpha scaffold.
 - Fixed SQLite connection cleanup, package-safe server imports, and repository ignores.
-- Passed 17 unit tests, compilation, plugin/skill validation, and MCP STDIO and
+- Passed 21 unit tests, compilation, plugin/skill validation, and MCP STDIO and
   HTTP read-call smoke checks.
 - Established the file-based agent exchange and model-efficiency policy under `docs/agent/`.
 - Confirmed the user's Venu 4 is paired through Garmin Connect on iPhone.
@@ -42,17 +42,24 @@ Finish the user's first-party OpenWear Coach plugin and automatic Garmin path wi
   loopback-only HTTP development fallback.
 - Added `SECURITY.md`; verified HTTP rejects wildcard/LAN serving, invalid Host
   headers, and invalid Origin headers.
+- Implemented canonical health metric/unit/range validation and safe source IDs.
+- Made health trends and readiness source-specific; HRV/resting-HR baselines
+  exclude the target date and require seven earlier samples.
+- Enabled approved health import, trends and readiness in the project STDIO
+  configuration; end-to-end synthetic MCP calls passed.
+- Expanded the skill into a coverage-aware, non-medical wellbeing coach and
+  added `docs/TODAY_WELLBEING.md`.
 
 ## Next exact action
 
 1. Run `git -c safe.directory=C:/Users/GANESH/open_source_projects/openwear-coach status -sb`.
-2. Read `updates/2026-08-17T2015Z-today-workout-mode.md`.
+2. Read `updates/2026-08-17T1835Z-wellbeing-mode.md`.
 3. Restart the desktop host, then create a new task inside this trusted project.
    Reopening a task created before the config change retains its old MCP
    inventory.
 4. Submit `/mcp`, confirm `openwear_local`, check coverage, and follow
-   `docs/TODAY_WORKOUT.md`. Approve `record_strength_session` only after
-   reviewing the exact sets.
+   `docs/TODAY_WELLBEING.md`. Approve `import_health_csv` only after reviewing
+   the exact dated metrics, values, units and source.
 5. Optionally install the skills-only package through a local marketplace; it
    has no MCP mapping yet and must not fabricate a connection ID.
 6. Prepare `PROVIDER-001` and the Garmin Developer Program application in

@@ -7,7 +7,7 @@ from contextlib import closing
 from pathlib import Path
 
 from openwear_coach.importers import parse_health_csv, parse_strength_csv
-from openwear_coach.models import StrengthSet
+from openwear_coach.models import HealthSample, StrengthSet
 from openwear_coach.storage import Database
 
 
@@ -41,6 +41,7 @@ class StorageAndImportTests(unittest.TestCase):
             self.assertEqual(coverage["strength"]["sessions"], 1)
             self.assertEqual(coverage["health"]["first_date"], "2026-08-13")
             self.assertEqual(coverage["health"]["last_date"], "2026-08-14")
+            self.assertEqual(coverage["health_sources"], ["user_import"])
             self.assertEqual(coverage["storage"], "local_sqlite")
             self.assertNotIn(str(database.path), str(coverage))
 
@@ -50,7 +51,10 @@ class StorageAndImportTests(unittest.TestCase):
             self.assertEqual(len(sets), 2)
             self.assertEqual(sets[1].weight_kg, 65.0)
             self.assertEqual(
-                database.metric_baseline("hrv_ms", "2026-08-14"), 50.0
+                database.metric_baseline(
+                    "hrv_ms", "2026-08-14", minimum_samples=1
+                ),
+                48.0,
             )
 
             exported = database.export_data("2026-08-13", "2026-08-14")
@@ -182,6 +186,79 @@ class StorageAndImportTests(unittest.TestCase):
         invalid = "date,metric,value,unit\n14/08/2026,hrv_ms,52,ms\n"
         with self.assertRaisesRegex(ValueError, "invalid ISO date"):
             parse_health_csv(invalid)
+
+    def test_health_values_require_supported_metric_unit_and_finite_range(self) -> None:
+        invalid_rows = (
+            ("hrv_ms", "nan", "ms", "must be finite"),
+            ("hrv_ms", "inf", "ms", "must be finite"),
+            ("unknown_metric", "1", "score", "unsupported health metric"),
+            ("sleep_hours", "8", "bpm", "unit .* is not valid"),
+            ("spo2_percent", "101", "%", "must be between"),
+        )
+        for metric, value, unit, message in invalid_rows:
+            with self.subTest(metric=metric, value=value, unit=unit):
+                csv_text = (
+                    "date,metric,value,unit\n"
+                    f"2026-08-14,{metric},{value},{unit}\n"
+                )
+                with self.assertRaisesRegex(ValueError, message):
+                    parse_health_csv(csv_text)
+
+    def test_health_unit_aliases_are_normalized(self) -> None:
+        samples = parse_health_csv(
+            "date,metric,value,unit\n"
+            "2026-08-14,sleep_hours,7.5,hours\n"
+            "2026-08-14,spo2_percent,97,percent\n"
+        )
+        self.assertEqual([sample.unit for sample in samples], ["h", "%"])
+
+    def test_health_reads_and_baselines_are_source_isolated(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            database = Database(Path(directory) / "openwear.db")
+            for day in range(1, 9):
+                date_text = f"2026-08-{day:02d}"
+                database.upsert_health_samples(
+                    [HealthSample(date_text, "hrv_ms", 40 + day, "ms")],
+                    source="garmin_screenshot",
+                )
+                database.upsert_health_samples(
+                    [HealthSample(date_text, "hrv_ms", 80 + day, "ms")],
+                    source="apple_health",
+                )
+
+            self.assertEqual(
+                database.health_value("2026-08-08", "hrv_ms", "garmin_screenshot"),
+                48.0,
+            )
+            self.assertEqual(
+                database.metric_baseline(
+                    "hrv_ms", "2026-08-08", "garmin_screenshot"
+                ),
+                44.0,
+            )
+            self.assertIsNone(
+                database.metric_baseline(
+                    "hrv_ms", "2026-08-07", "garmin_screenshot"
+                )
+            )
+            points = database.health_points(
+                "2026-08-01", "2026-08-08", source="apple_health"
+            )
+            self.assertEqual(len(points), 8)
+            self.assertTrue(all(point["source"] == "apple_health" for point in points))
+
+    def test_storage_revalidates_health_samples_and_source(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            database = Database(Path(directory) / "openwear.db")
+            with self.assertRaisesRegex(ValueError, "must be finite"):
+                database.upsert_health_samples(
+                    [HealthSample("2026-08-14", "hrv_ms", float("nan"), "ms")]
+                )
+            with self.assertRaisesRegex(ValueError, "source must be"):
+                database.upsert_health_samples(
+                    [HealthSample("2026-08-14", "hrv_ms", 50, "ms")],
+                    source="../../unsafe",
+                )
 
     def test_rejects_invalid_rir(self) -> None:
         invalid = (

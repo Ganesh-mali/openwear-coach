@@ -10,6 +10,9 @@ enabled_tools = [
   "record_strength_session",
   "get_strength_sessions",
   "get_strength_progress",
+  "import_health_csv",
+  "get_health_trends",
+  "get_daily_readiness",
 ]
 default_tools_approval_mode = "writes"
 startup_timeout_sec = 5

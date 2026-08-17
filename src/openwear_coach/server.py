@@ -17,6 +17,7 @@ from openwear_coach.analytics import (
     readiness_score,
     summarize_strength_sets,
 )
+from openwear_coach.health_metrics import normalize_health_source
 from openwear_coach.importers import parse_health_csv, parse_strength_csv
 from openwear_coach.models import StrengthSet
 from openwear_coach.security import (
@@ -38,10 +39,10 @@ db = Database(_database_path())
 mcp = MCPServer(
     "openwear-coach",
     title="OpenWear Coach",
-    description="Local-first strength and recovery analysis for user-owned wearable data.",
+    description="Local-first physical wellbeing and strength coaching from user-owned wearable data.",
     instructions=(
         "Use exact ISO dates. Report missing data and readiness coverage. "
-        "Treat readiness as a coaching heuristic, not medical advice."
+        "Keep sources separate. Treat readiness as a coaching heuristic, not medical advice."
     ),
     version="0.1.0",
 )
@@ -73,7 +74,10 @@ def get_data_coverage() -> dict[str, Any]:
 
 @mcp.tool(annotations=READ_LOCAL)
 def get_health_trends(
-    start_date: str, end_date: str, metrics: list[str] | None = None
+    start_date: str,
+    end_date: str,
+    metrics: list[str] | None = None,
+    source: str = "user_import",
 ) -> dict[str, Any]:
     """Return exact dated health points plus per-metric summary changes."""
 
@@ -82,7 +86,8 @@ def get_health_trends(
     if start > end:
         raise ValueError("start_date must not be after end_date")
     clean_metrics = [metric.strip().lower() for metric in metrics] if metrics else None
-    points = db.health_points(start, end, clean_metrics)
+    clean_source = normalize_health_source(source)
+    points = db.health_points(start, end, clean_metrics, clean_source)
     grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for point in points:
         grouped[str(point["metric"])].append(point)
@@ -104,32 +109,40 @@ def get_health_trends(
     return {
         "start_date": start,
         "end_date": end,
+        "source": clean_source,
         "points": points,
         "summaries": summaries,
     }
 
 
 @mcp.tool(annotations=READ_LOCAL)
-def get_daily_readiness(on_date: str) -> dict[str, Any]:
+def get_daily_readiness(
+    on_date: str, source: str = "user_import"
+) -> dict[str, Any]:
     """Calculate a transparent recovery heuristic for one exact date."""
 
     target = _iso_date(on_date)
-    hrv = db.health_value(target, "hrv_ms")
-    resting_hr = db.health_value(target, "resting_hr_bpm")
+    clean_source = normalize_health_source(source)
+    hrv = db.health_value(target, "hrv_ms", clean_source)
+    resting_hr = db.health_value(target, "resting_hr_bpm", clean_source)
     components = normalized_recovery_components(
-        sleep_hours=db.health_value(target, "sleep_hours"),
-        body_battery=db.health_value(target, "body_battery"),
-        stress=db.health_value(target, "stress"),
+        sleep_hours=db.health_value(target, "sleep_hours", clean_source),
+        body_battery=db.health_value(target, "body_battery", clean_source),
+        stress=db.health_value(target, "stress", clean_source),
         hrv_ms=hrv,
-        hrv_baseline_ms=db.metric_baseline("hrv_ms", target),
+        hrv_baseline_ms=db.metric_baseline("hrv_ms", target, clean_source),
         resting_hr_bpm=resting_hr,
-        resting_hr_baseline_bpm=db.metric_baseline("resting_hr_bpm", target),
+        resting_hr_baseline_bpm=db.metric_baseline(
+            "resting_hr_bpm", target, clean_source
+        ),
     )
     result = readiness_score(components)
     return {
         "date": target,
+        "source": clean_source,
         **result,
         "method": "weighted available components; missing inputs are excluded",
+        "baseline_policy": "up to 28 prior days from the same source; minimum 7 samples",
         "not_medical_advice": True,
     }
 
@@ -198,11 +211,18 @@ def get_strength_progress(
 
 
 @mcp.tool(annotations=WRITE_LOCAL)
-def import_health_csv(csv_text: str) -> dict[str, Any]:
+def import_health_csv(
+    csv_text: str, source: str = "user_import"
+) -> dict[str, Any]:
     """Import health CSV text into local storage; existing identical keys are updated."""
 
     samples = parse_health_csv(csv_text)
-    return {"imported": db.upsert_health_samples(samples), "kind": "health"}
+    clean_source = normalize_health_source(source)
+    return {
+        "imported": db.upsert_health_samples(samples, clean_source),
+        "kind": "health",
+        "source": clean_source,
+    }
 
 
 @mcp.tool(annotations=WRITE_LOCAL)

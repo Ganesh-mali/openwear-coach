@@ -25,25 +25,31 @@ Working pre-alpha for a local-first, vendor-neutral wearable-data MCP server and
 - Source-aware strength-set identity and transactional legacy-schema migration
 - Windows-safe SQLite connection cleanup and package-safe MCP Inspector imports
 - User-facing first-party architecture and Windows setup guide
-- A no-extra-cost project MCP configuration that opens no port and exposes only
-  coverage plus strength record/history/progress tools, with write approval
+- A no-extra-cost project MCP configuration that opens no port and exposes
+  coverage, approved health/strength recording, trends and progress tools
 - Fail-closed HTTP bind validation and a documented local threat model
+- Canonical health metric/unit/range validation and safe source identifiers
+- Source-specific health trends and readiness baselines that exclude the target
+  date and require seven earlier samples
+- A coverage-aware, non-medical physical wellbeing skill and today's Garmin
+  screenshot workflow
 
 ## Verified
 
-- Unit suite: 17/17 passed
+- Unit suite: 21/21 passed
 - Editable install, compilation, imports, and dependency check passed
 - MCP STDIO and HTTP initialization plus a read-only tool call passed
 - Invalid Host and Origin requests were rejected; non-loopback launch failed
   before listening
 - `tools/list` returned all nine tools
 - OpenAI plugin validator and skill validator passed
+- End-to-end MCP STDIO health import, trends and readiness calls passed against
+  a temporary synthetic database
 - Draft PR is open and marked draft
 
 ## Known risks and follow-ups
 
-- Known health metrics need finite-value checks and unit validation/normalization.
-- Session replacement semantics and readiness baseline requirements need explicit design and tests.
+- Session replacement semantics still need explicit design and tests.
 - The plugin package is skills-only and has no `.app.json`; a local marketplace
   can install its coaching instructions, but a web plugin mapping remains
   deferred under the user's no-extra-charge requirement.
@@ -62,7 +68,7 @@ Working pre-alpha for a local-first, vendor-neutral wearable-data MCP server and
 ## Next three actions
 
 1. After restarting the desktop host, create a new task inside this project,
-   submit `/mcp`, confirm `openwear_local`, check coverage, and record/review a
-   strength session using `docs/TODAY_WORKOUT.md`.
+   submit `/mcp`, confirm `openwear_local`, check coverage, and approve a dated
+   Garmin screenshot import using `docs/TODAY_WELLBEING.md`.
 2. Optionally install the skills-only package from a local marketplace.
 3. Prepare the official Garmin Developer Program application and a provider adapter with synthetic fixtures while approval is pending.

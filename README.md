@@ -78,14 +78,16 @@ PowerShell equivalent:
 $env:OPENWEAR_DB = "$env:LOCALAPPDATA\OpenWearCoach\data.db"
 ```
 
-The checked-in `.codex/config.toml` is the preferred zero-cost setup for the
+The checked-in `.codex/config.toml` is the preferred zero-extra-cost setup for the
 ChatGPT desktop/Codex host. It starts OpenWear through STDIO, opens no network
 port, stores data under the Git-ignored `.local/` directory, and initially
-enables only the read-only `get_data_coverage` tool. After restarting the
+enables coverage, approved health/strength recording, trends, readiness and
+strength-progress tools. After restarting the
 desktop host, create a new task inside this trusted project; an already-open
 task keeps its original MCP inventory. Enter `/mcp` and submit it in the new
 task to confirm `openwear_local`. See `docs/TODAY_WORKOUT.md` for the current
-strength-session workflow.
+strength-session workflow. See `docs/TODAY_WELLBEING.md` for sleep, heart-rate,
+HRV, stress, Body Battery and other wellbeing observations.
 
 For manual HTTP development and MCP Inspector testing, use:
 
@@ -133,6 +135,11 @@ date,session_id,exercise,set_index,reps,weight_kg,rir
 ```
 
 Dates must be ISO `YYYY-MM-DD`. Weight is stored in kilograms. Import is additive and idempotent for identical primary keys.
+
+Health imports use a canonical metric/unit catalogue and reject unknown metrics,
+wrong units, non-finite values and values outside broad validation bounds. Health
+trends and readiness are source-specific. HRV and resting-heart-rate baselines
+use at least seven prior same-source samples and exclude the target date.
 
 ## MCP tools in the scaffold
 
