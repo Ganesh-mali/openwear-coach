@@ -62,6 +62,8 @@ Working pre-alpha for a local-first, vendor-neutral wearable-data MCP server and
 - The Shortcut route should use a rolling window and importer-side idempotency; it must never treat missing metrics as zero.
 - Public Connect IQ APIs do not expose native Garmin strength history, sleep stages, or HRV status; a sidecar can only provide supported device-local metrics and OpenWear-owned activities.
 - Garmin Activity/Health API access remains approval-gated; OAuth, consent, revocation, push ingestion, reconciliation, and deletion are not implemented.
+- A truthful Health plus Activity API evaluation package is ready; sending it
+  needs the user's business/contact details and action-time confirmation.
 - SQLite is not application-encrypted; the synthetic proof must remain empty
   until Windows storage/access expectations are reviewed.
 

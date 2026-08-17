@@ -53,7 +53,7 @@ Finish the user's first-party OpenWear Coach plugin and automatic Garmin path wi
 ## Next exact action
 
 1. Run `git -c safe.directory=C:/Users/GANESH/open_source_projects/openwear-coach status -sb`.
-2. Read `updates/2026-08-17T1835Z-wellbeing-mode.md`.
+2. Read `updates/2026-08-17T1845Z-garmin-application-package.md`.
 3. Restart the desktop host, then create a new task inside this trusted project.
    Reopening a task created before the config change retains its old MCP
    inventory.
@@ -62,8 +62,9 @@ Finish the user's first-party OpenWear Coach plugin and automatic Garmin path wi
    the exact dated metrics, values, units and source.
 5. Optionally install the skills-only package through a local marketplace; it
    has no MCP mapping yet and must not fabricate a connection ID.
-6. Prepare `PROVIDER-001` and the Garmin Developer Program application in
-   parallel, retaining the no-extra-charge constraint.
+6. Review `docs/GARMIN_API_APPLICATION.md`, collect the user's business/contact
+   details, then obtain action-time confirmation before sending the email or
+   Garmin Health enquiry form.
 7. Use Terra/medium for bounded plugin wiring and fixtures; return to Sol for
    OAuth/privacy or cross-provider identity decisions.
 

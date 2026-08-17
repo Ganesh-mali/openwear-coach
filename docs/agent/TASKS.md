@@ -20,4 +20,4 @@ Status values: `backlog`, `in_progress`, `blocked`, `completed`.
 | VENDOR-001 | completed | user | Decide whether to use Fitness AI Connector | Vendor audit | Rejected: user wants a first-party OpenWear plugin; nothing installed or authorized |
 | LIFTTRACK-001 | completed | user | Decide whether to use LiftTrack | Vendor audit | Rejected: user wants a first-party OpenWear plugin; nothing installed or authorized |
 | PROVIDER-001 | backlog | unassigned | Add a provider-neutral ingest contract and synthetic fixtures | DATA-001; DATA-002 | Normalize provenance, timestamps, units, idempotency keys, and receipts without personal data |
-| GARMIN-001 | backlog | user/root | Apply for and integrate Garmin Activity and Health APIs | Provider application and privacy/security plan | OAuth once, then push plus reconciliation; never collect Garmin passwords |
+| GARMIN-001 | in_progress | user/root | Apply for and integrate Garmin Activity and Health APIs | User contact/business details and action-time submission confirmation | Evaluation application package prepared; OAuth once, then push plus reconciliation; never collect Garmin passwords |
