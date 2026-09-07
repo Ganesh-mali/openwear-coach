@@ -59,3 +59,5 @@ tests/test_apple_health.py, docs/APPLE_HEALTH.md and defusedxml dependency.
 Final unit/MCP suite: 33 passed. pip check passed. XML attack rejection, exact
 source/date filtering, duplicate elimination and conflicting overlap rejection
 passed. Personal exports and iPhone transfer remain user setup, not verified.
+
+Publishing confirmed: commit 363ceab pushed to origin/agent/initial-openwear-coach. PR #1 is OPEN and no longer draft. GitHub checks were pending at the last snapshot (one Linux 3.13 job passed). The user declined the subsequent watch command, so hosted CI completion is unverified. This final evidence note is local and not part of the published commit.

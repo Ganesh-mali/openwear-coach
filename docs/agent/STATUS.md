@@ -46,3 +46,5 @@ User explicitly selected supported exports/Apple Health over unofficial sync.
 The experimental unofficial connector was removed and garminconnect uninstalled
 before commit. It never authenticated. Apple XML imports use defusedxml and
 select only exact source/dates; supported subset documented in APPLE_HEALTH.md.
+
+Published implementation: 363ceab on origin/agent/initial-openwear-coach; PR #1 ready for review, not merged. Hosted CI completion remains unverified because the watch command was declined. Final publishing evidence is recorded locally in the linked update.
