@@ -61,3 +61,5 @@ Use `not exposed` rather than guessing unavailable values.
 - Prompt, completion, reasoning, cached-token, tool-fee, and subscription usage may be unavailable.
 - Do not convert proxy fields into monetary savings.
 - Model availability and app entitlements can differ from API documentation.
+
+| 2026-09-07 | root READY-001 | completed locally | current host model / effort not exposed | Handoff, status, one update; bounded source and test inspection | focused implementation and delivery | not exposed | 1 | 33 tests, setup, CLI demo, Apple XML safety and STDIO integration pass; no personal data used | Recommended Terra for final publishing; no exact token or savings claim |

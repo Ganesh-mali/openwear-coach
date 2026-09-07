@@ -1,0 +1,5 @@
+date,metric,value,unit
+2026-09-01,sleep_hours,7.5,h
+2026-09-01,body_battery,70,score
+2026-09-02,sleep_hours,8,h
+2026-09-02,body_battery,76,score

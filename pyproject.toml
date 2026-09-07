@@ -10,10 +10,12 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
   "mcp[cli]>=2.0,<3",
+  "defusedxml>=0.7.1,<1",
 ]
 
 [project.scripts]
 openwear-coach = "openwear_coach.server:main"
+openwear = "openwear_coach.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

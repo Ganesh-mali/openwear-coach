@@ -249,8 +249,8 @@ def record_strength_session(
                 date=target,
                 session_id=session_id.strip(),
                 exercise=str(raw["exercise"]).strip().lower().replace(" ", "_"),
-                set_index=int(raw.get("set_index", index)),
-                reps=int(raw["reps"]),
+                set_index=raw.get("set_index", index),
+                reps=raw["reps"],
                 weight_kg=float(raw["weight_kg"]),
                 rir=None if raw.get("rir") is None else float(raw["rir"]),
             )

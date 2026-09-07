@@ -1,76 +1,48 @@
 # OpenWear Coach status
 
-Last verified: 2026-08-17 (Europe/London)
+Last verified: 2026-09-07 (Europe/London)
 
-## Project phase
+## Ready locally
 
-Working pre-alpha for a local-first, vendor-neutral wearable-data MCP server and first-party OpenWear Coach plugin. The user rejected third-party Garmin plugins and requires no extra Platform charge. The current proof target is a project-scoped STDIO MCP process in the ChatGPT desktop/Codex host; the supported automatic target remains OpenWear's own adapter to Garmin's official Activity and Health APIs.
+The supported Apple Health export and manual Garmin-observation workflow is usable: canonical CSV validation and
+import, local SQLite storage, an offline CLI, and dated ChatGPT Project packs.
+Run `scripts/setup.ps1` and follow `docs/USE_NOW.md`.
 
-## Repository state
+- `openwear` CLI: status, import-health, import-strength, project-pack.
+- Dry runs do not create a database; imports validate the whole batch first.
+- Pack exports preserve dates/sources and refuse empty ranges or existing folders.
+- Pack includes JSON, Project instructions, profile template and getting-started text.
+- Nine-tool STDIO MCP server also works in an isolated client integration test.
+- Health baselines exclude samples older than 28 calendar days and the target day.
+- Strength writes reject non-finite loads and fractional counts.
+- Windows setup, editable install and pip check passed; 33 tests passed.
+- Synthetic demo pack exists under ignored `.local/demo-ready-pack-20260907/`.
+- No real health data imported, uploaded or committed during this work.
 
-- Branch: `agent/initial-openwear-coach`
-- The validated implementation is maintained on the branch below; use
-  `git log -1` for the latest published commit.
-- Draft PR: [#1](https://github.com/Ganesh-mali/openwear-coach/pull/1) into `main`
-- Remote: `https://github.com/Ganesh-mali/openwear-coach.git`
-- Local-only inputs deliberately excluded from Git: `openwear-coach-prealpha.tar.gz` and `openwear-coach-prealpha/`
+## GitHub
 
-## Implemented
+Branch: `agent/initial-openwear-coach`; existing PR #1 targets `main`.
+Publishing this phase uses explicit source paths only. Read the linked update
+for the final publishing evidence, and use git log/status for current state.
 
-- Python 3.11+ package with `mcp[cli]>=2,<3`
-- Local SQLite storage and CSV import for health and strength data
-- Strength volume/e1RM, health trends, readiness, sessions, progression, and export logic
-- STDIO and loopback Streamable HTTP MCP transports with nine server tools
-- Validated first-party plugin manifest and packaged Strength Coach skill
-- Source-aware strength-set identity and transactional legacy-schema migration
-- Windows-safe SQLite connection cleanup and package-safe MCP Inspector imports
-- User-facing first-party architecture and Windows setup guide
-- A no-extra-cost project MCP configuration that opens no port and exposes
-  coverage, approved health/strength recording, trends and progress tools
-- Fail-closed HTTP bind validation and a documented local threat model
-- Canonical health metric/unit/range validation and safe source identifiers
-- Source-specific health trends and readiness baselines that exclude the target
-  date and require seven earlier samples
-- A coverage-aware, non-medical physical wellbeing skill and today's Garmin
-  screenshot workflow
+## Still unfinished
 
-## Verified
+- Fully automatic transfer is outside the selected scope. The user rejected
+  developer approval as a dependency and chose supported exports/Apple Health
+  over unofficial account access. No Garmin application or login is required.
+- This desktop task exposes no OpenWear MCP tool; client smoke is not proof of
+  a host-loaded connection. The CLI/file workflow removes that dependency.
+- ChatGPT Project creation and personal-file upload remain user setup.
+- Session replacement is unsupported: imports are additive/upsert only.
+- Native Garmin CSV/FIT parsing, bodyweight/assisted load semantics, hosted auth,
+  web plugin registration and workout publishing remain future work.
+- SQLite is not application-encrypted. Generated packs contain personal data
+  when populated; review before sharing and keep under ignored `.local/`.
+- Preserve no-extra-Platform-charge and no-third-party-plugin constraints.
 
-- Unit suite: 21/21 passed
-- Editable install, compilation, imports, and dependency check passed
-- MCP STDIO and HTTP initialization plus a read-only tool call passed
-- Invalid Host and Origin requests were rejected; non-loopback launch failed
-  before listening
-- `tools/list` returned all nine tools
-- OpenAI plugin validator and skill validator passed
-- End-to-end MCP STDIO health import, trends and readiness calls passed against
-  a temporary synthetic database
-- Draft PR is open and marked draft
+## Safety decision
 
-## Known risks and follow-ups
-
-- Session replacement semantics still need explicit design and tests.
-- The plugin package is skills-only and has no `.app.json`; a local marketplace
-  can install its coaching instructions, but a web plugin mapping remains
-  deferred under the user's no-extra-charge requirement.
-- Secure MCP Tunnel requires a Platform runtime API key. A preflight tunnel
-  exists but is unused; no key, client, credits, or health data were used.
-- Hosted/non-loopback deployments are rejected; enabling them later requires
-  authentication and a privacy/security design.
-- Apple Health provides an automatic but incomplete Garmin subset and requires Garmin Connect to be foregrounded for transfer.
-- iCloud for Windows is not installed on the current laptop; the recommended drop-folder bridge cannot run until the user installs, signs in, and enables iCloud Drive.
-- The Shortcut route should use a rolling window and importer-side idempotency; it must never treat missing metrics as zero.
-- Public Connect IQ APIs do not expose native Garmin strength history, sleep stages, or HRV status; a sidecar can only provide supported device-local metrics and OpenWear-owned activities.
-- Garmin Activity/Health API access remains approval-gated; OAuth, consent, revocation, push ingestion, reconciliation, and deletion are not implemented.
-- A truthful Health plus Activity API evaluation package is ready; sending it
-  needs the user's business/contact details and action-time confirmation.
-- SQLite is not application-encrypted; the synthetic proof must remain empty
-  until Windows storage/access expectations are reviewed.
-
-## Next three actions
-
-1. After restarting the desktop host, create a new task inside this project,
-   submit `/mcp`, confirm `openwear_local`, check coverage, and approve a dated
-   Garmin screenshot import using `docs/TODAY_WELLBEING.md`.
-2. Optionally install the skills-only package from a local marketplace.
-3. Prepare the official Garmin Developer Program application and a provider adapter with synthetic fixtures while approval is pending.
+User explicitly selected supported exports/Apple Health over unofficial sync.
+The experimental unofficial connector was removed and garminconnect uninstalled
+before commit. It never authenticated. Apple XML imports use defusedxml and
+select only exact source/dates; supported subset documented in APPLE_HEALTH.md.

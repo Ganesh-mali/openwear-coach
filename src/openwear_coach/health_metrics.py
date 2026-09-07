@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 import re
 from dataclasses import dataclass
+from datetime import date
 
 from .models import HealthSample
 
@@ -73,4 +74,4 @@ def normalize_health_sample(sample: HealthSample) -> HealthSample:
         raise ValueError(
             f"{metric} must be between {spec.minimum:g} and {spec.maximum:g} {spec.unit}"
         )
-    return HealthSample(sample.date, metric, value, spec.unit)
+    return HealthSample(date.fromisoformat(sample.date).isoformat(), metric, value, spec.unit)

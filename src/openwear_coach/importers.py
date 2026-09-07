@@ -8,6 +8,7 @@ from datetime import date
 
 from .health_metrics import normalize_health_sample
 from .models import HealthSample, StrengthSet
+from .strength_metrics import normalize_strength_set
 
 
 def _validate_date(value: str) -> str:
@@ -40,7 +41,7 @@ def parse_health_csv(csv_text: str) -> list[HealthSample]:
                     )
                 )
             )
-        except (TypeError, ValueError) as exc:
+        except (AttributeError, TypeError, ValueError) as exc:
             raise ValueError(f"invalid health CSV row {line}: {exc}") from exc
     return samples
 
@@ -79,7 +80,7 @@ def parse_strength_csv(csv_text: str) -> list[StrengthSet]:
                 raise ValueError("set_index, reps and weight_kg must be positive")
             if item.rir is not None and not 0 <= item.rir <= 10:
                 raise ValueError("rir must be between 0 and 10")
-            items.append(item)
-        except (TypeError, ValueError) as exc:
+            items.append(normalize_strength_set(item))
+        except (AttributeError, TypeError, ValueError) as exc:
             raise ValueError(f"invalid strength CSV row {line}: {exc}") from exc
     return items

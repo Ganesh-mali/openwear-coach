@@ -1,8 +1,16 @@
-# OpenWear Coach (provisional name)
+# OpenWear Coach
+
+**Start here: [Use your Garmin personal coach now](docs/USE_NOW.md).**
+Import supported Apple Health XML or manually prepared Garmin observations, keep them locally, and generate
+a dated coaching pack for a ChatGPT Project. Includes a Windows setup script,
+synthetic demo, profile template and offline CLI. No Garmin developer approval
+or unofficial Garmin account access is required. Transfers are file-based.
 
 An open-source, local-first MCP server for strength-training and recovery analysis from user-owned wearable data.
 
-The project is deliberately vendor-neutral. The first version works with CSV imports and local SQLite. An official Garmin Connect adapter is planned behind the same interface, subject to Garmin Connect Developer Program approval and any applicable licensing terms.
+The project is deliberately vendor-neutral. The personal version works with
+supported file exports and local SQLite. Direct Garmin account integration is
+outside the selected safety-first workflow.
 
 > This project is independent and is not affiliated with, endorsed by, or sponsored by Garmin, OpenAI, or ChatGPT. Garmin and Garmin Connect are trademarks of Garmin Ltd. or its subsidiaries.
 

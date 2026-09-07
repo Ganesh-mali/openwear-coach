@@ -5,6 +5,7 @@ from __future__ import annotations
 import sqlite3
 from collections.abc import Iterable, Iterator, Sequence
 from contextlib import contextmanager
+from datetime import date, timedelta
 from pathlib import Path
 from statistics import median
 
@@ -175,6 +176,9 @@ class Database:
     def upsert_strength_sets(
         self, sets: Iterable[StrengthSet], source: str | None = None
     ) -> int:
+        from .strength_metrics import normalize_strength_set
+
+        sets = [normalize_strength_set(item, source) for item in sets]
         rows = [
             (
                 item.date,
@@ -184,7 +188,7 @@ class Database:
                 item.reps,
                 item.weight_kg,
                 item.rir,
-                item.source if source is None else source,
+                item.source,
             )
             for item in sets
         ]
@@ -297,10 +301,11 @@ class Database:
             rows = connection.execute(
                 """
                 SELECT value FROM health_samples
-                WHERE metric = ? AND date < ? AND source = ?
+                WHERE metric = ? AND date < ? AND source = ? AND date >= ?
                 ORDER BY date DESC LIMIT ?
                 """,
-                (metric, before_date, normalize_health_source(source), limit),
+                (metric, before_date, normalize_health_source(source),
+                 (date.fromisoformat(before_date) - timedelta(days=28)).isoformat(), limit),
             ).fetchall()
         values = [float(row["value"]) for row in rows]
         return median(values) if len(values) >= minimum_samples else None

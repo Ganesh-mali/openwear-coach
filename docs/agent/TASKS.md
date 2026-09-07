@@ -4,6 +4,7 @@ Status values: `backlog`, `in_progress`, `blocked`, `completed`.
 
 | ID | Status | Owner | Scope | Dependencies | Outcome / next step |
 |---|---|---|---|---|---|
+| READY-001 | completed | root | CLI imports, Project pack, Windows setup, validation fixes, CI and GitHub delivery; owns src, tests, scripts, examples, docs, README, pyproject and .github | Existing local core | Manual workflow implemented; 33 tests/setup/CLI demo pass; GitHub delivery tracked in latest update; supported exports selected; no Garmin approval dependency |
 | OPS-001 | completed | root | Establish shared agent exchange and model-efficiency protocol | None | `AGENTS.md` and `docs/agent/` created |
 | DATA-001 | completed | root/strength_identity | Define strength-set identity across date, session, exercise, set, and source | Product semantics | Five-field PK, transactional legacy migration, source-aware reads/exports, and collision tests passed |
 | DATA-002 | completed | root | Validate finite health values and canonical units | Metric catalog | Canonical catalogue, unit normalization, finite/range/source validation and adversarial tests passed |
@@ -20,4 +21,7 @@ Status values: `backlog`, `in_progress`, `blocked`, `completed`.
 | VENDOR-001 | completed | user | Decide whether to use Fitness AI Connector | Vendor audit | Rejected: user wants a first-party OpenWear plugin; nothing installed or authorized |
 | LIFTTRACK-001 | completed | user | Decide whether to use LiftTrack | Vendor audit | Rejected: user wants a first-party OpenWear plugin; nothing installed or authorized |
 | PROVIDER-001 | backlog | unassigned | Add a provider-neutral ingest contract and synthetic fixtures | DATA-001; DATA-002 | Normalize provenance, timestamps, units, idempotency keys, and receipts without personal data |
-| GARMIN-001 | in_progress | user/root | Apply for and integrate Garmin Activity and Health APIs | User contact/business details and action-time submission confirmation | Evaluation application package prepared; OAuth once, then push plus reconciliation; never collect Garmin passwords |
+| GARMIN-001 | backlog | unassigned | Official Garmin API integration, outside selected personal scope | Future explicit user request | User rejected developer approval dependency; supported exports/Apple Health selected instead |
+
+
+| EXPORT-001 | completed | root | Source/date-filtered Apple Health XML import | User safety-first choice | Defused XML, duplicate/overlap guards, dry run, docs and 6 tests; no account access |

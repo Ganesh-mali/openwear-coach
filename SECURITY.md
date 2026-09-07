@@ -68,3 +68,17 @@ to that subscription's own terms; OpenWear adds no separately billed service.
 
 Do not include personal health data or credentials in an issue. Report the
 minimum reproduction and identify the affected version, transport, and tool.
+# Personal file workflow (2026-09-07)
+
+The selected personal route uses supported exports and local processing. There
+is no Garmin login, password/token collection, unofficial Garmin dependency,
+background account access, or automatic upload. The experimental unofficial
+connector was removed before publishing and never authenticated.
+
+Apple XML is parsed with defusedxml; entity expansion and external entities are
+rejected. Only selected-source, selected-date supported metrics reach SQLite.
+Raw exports may contain extensive sensitive data: keep them in `.local/`, do not
+upload them, and review generated Project packs before deliberately sharing.
+Git ignores are a convenience, not encryption or access control. SQLite and
+exports are not application-encrypted; protect your Windows account and storage.
+No software can promise zero security/privacy risk.
