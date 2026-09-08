@@ -22,7 +22,8 @@ jobs:
         timeout-minutes: 2
         run: |
           mkdir -p dist/shortcut
-          /usr/bin/shortcuts sign --mode anyone --input 'shortcuts/OpenWear Check-in.unsigned.plist' --output 'dist/shortcut/OpenWear Check-in.shortcut'
+          python3 -c "import plistlib,pathlib; p=pathlib.Path('shortcuts/OpenWear Check-in.unsigned.plist'); pathlib.Path('dist/input.shortcut').write_bytes(plistlib.dumps(plistlib.loads(p.read_bytes()), fmt=plistlib.FMT_BINARY))"
+          /usr/bin/shortcuts sign --mode anyone --input 'dist/input.shortcut' --output 'dist/shortcut/OpenWear Check-in.shortcut'
           test -s 'dist/shortcut/OpenWear Check-in.shortcut'
       - uses: actions/upload-artifact@v4
         with:
