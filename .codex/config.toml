@@ -1,0 +1,23 @@
+# Project-scoped, no-cost local MCP proof. This contains no credentials and
+# starts OpenWear over STDIO, so no network port is opened.
+[mcp_servers.openwear_local]
+command = ".venv\\Scripts\\openwear-coach.exe"
+cwd = "."
+enabled = true
+required = false
+enabled_tools = [
+  "get_data_coverage",
+  "record_strength_session",
+  "get_strength_sessions",
+  "get_strength_progress",
+  "import_health_csv",
+  "get_health_trends",
+  "get_daily_readiness",
+]
+default_tools_approval_mode = "writes"
+startup_timeout_sec = 5
+tool_timeout_sec = 20
+
+[mcp_servers.openwear_local.env]
+OPENWEAR_DB = ".local\\openwear-local.db"
+OPENWEAR_TRANSPORT = "stdio"

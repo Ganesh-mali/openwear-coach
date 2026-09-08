@@ -1,21 +1,8 @@
-# OpenWear Coach
-
-**iPhone-first work in progress:** [OpenWear Check-in Shortcut](shortcuts/README.md)
-has generated source and a phone-only assembly guide. Signing, installation
-and native execution are not yet verified. The PC workflow below is optional
-and is not the intended daily phone experience.
-
-**Start here: [Use your Garmin personal coach now](docs/USE_NOW.md).**
-Import supported Apple Health XML or manually prepared Garmin observations, keep them locally, and generate
-a dated coaching pack for a ChatGPT Project. Includes a Windows setup script,
-synthetic demo, profile template and offline CLI. No Garmin developer approval
-or unofficial Garmin account access is required. Transfers are file-based.
+# OpenWear Coach (provisional name)
 
 An open-source, local-first MCP server for strength-training and recovery analysis from user-owned wearable data.
 
-The project is deliberately vendor-neutral. The personal version works with
-supported file exports and local SQLite. Direct Garmin account integration is
-outside the selected safety-first workflow.
+The project is deliberately vendor-neutral. The first version works with CSV imports and local SQLite. An official Garmin Connect adapter is planned behind the same interface, subject to Garmin Connect Developer Program approval and any applicable licensing terms.
 
 > This project is independent and is not affiliated with, endorsed by, or sponsored by Garmin, OpenAI, or ChatGPT. Garmin and Garmin Connect are trademarks of Garmin Ltd. or its subsidiaries.
 
@@ -33,9 +20,7 @@ The currently listed Fitness AI Connector is a useful proof of demand, but its p
 
 ## Status
 
-This repository is a working pre-alpha with a validated first-party plugin
-package. It is not yet connected to a ChatGPT MCP registration or published in
-the public plugin directory.
+This repository is a working pre-alpha scaffold, not yet a public ChatGPT app.
 
 Implemented:
 
@@ -43,8 +28,6 @@ Implemented:
 - CSV import for health and strength data;
 - deterministic readiness and strength-progression calculations;
 - MCP tools with explicit safety annotations;
-- a first-party plugin manifest and packaged Strength Coach skill;
-- source-aware strength identity with legacy database migration;
 - unit tests for the dependency-free analytics core.
 
 Not yet implemented:
@@ -54,9 +37,6 @@ Not yet implemented:
 - hosted multi-user authentication;
 - workout publication to Garmin;
 - public HTTPS deployment and ChatGPT directory submission.
-
-The implementation and connection roadmap is in
-[docs/FIRST_PARTY_PLUGIN.md](docs/FIRST_PARTY_PLUGIN.md).
 
 ## Quick start
 
@@ -70,55 +50,11 @@ pip install -e .
 openwear-coach
 ```
 
-PowerShell on Windows:
-
-```powershell
-py -3.11 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -e .
-openwear-coach
-```
-
 The Streamable HTTP MCP endpoint is `http://127.0.0.1:8000/mcp` by default. Override the local database with:
 
 ```bash
 export OPENWEAR_DB=/absolute/path/to/openwear.db
 ```
-
-PowerShell equivalent:
-
-```powershell
-$env:OPENWEAR_DB = "$env:LOCALAPPDATA\OpenWearCoach\data.db"
-```
-
-The checked-in `.codex/config.toml` is the preferred zero-extra-cost setup for the
-ChatGPT desktop/Codex host. It starts OpenWear through STDIO, opens no network
-port, stores data under the Git-ignored `.local/` directory, and initially
-enables coverage, approved health/strength recording, trends, readiness and
-strength-progress tools. After restarting the
-desktop host, create a new task inside this trusted project; an already-open
-task keeps its original MCP inventory. Enter `/mcp` and submit it in the new
-task to confirm `openwear_local`. See `docs/TODAY_WORKOUT.md` for the current
-strength-session workflow. See `docs/TODAY_WELLBEING.md` for sleep, heart-rate,
-HRV, stress, Body Battery and other wellbeing observations.
-
-For manual HTTP development and MCP Inspector testing, use:
-
-```powershell
-.\scripts\start-local.ps1
-```
-
-This fallback launcher also uses `.local/` and binds only to `127.0.0.1`. The
-server refuses LAN, wildcard, and hostname bindings because network
-authentication is not implemented.
-
-## First-party ChatGPT plugin
-
-The plugin source is in `plugins/openwear-coach/`. It contains OpenWear's own
-manifest and coaching skill; it does not install or call another fitness
-plugin. The MCP mapping is intentionally added only after the local OpenWear
-server is registered in ChatGPT developer mode, because ChatGPT generates a
-user-specific connection ID during that one-time setup.
 
 For development with the MCP Inspector:
 
@@ -148,11 +84,6 @@ date,session_id,exercise,set_index,reps,weight_kg,rir
 ```
 
 Dates must be ISO `YYYY-MM-DD`. Weight is stored in kilograms. Import is additive and idempotent for identical primary keys.
-
-Health imports use a canonical metric/unit catalogue and reject unknown metrics,
-wrong units, non-finite values and values outside broad validation bounds. Health
-trends and readiness are source-specific. HRV and resting-heart-rate baselines
-use at least seven prior same-source samples and exclude the target date.
 
 ## MCP tools in the scaffold
 
