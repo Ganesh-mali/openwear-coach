@@ -4,6 +4,11 @@ Last verified: 2026-09-07 (Europe/London)
 
 ## Ready locally
 
+Latest target: iPhone-only daily use through existing Garmin Connect, Apple
+Health, Shortcuts and ChatGPT. Shortcut source/assembly guide now exists in
+shortcuts/, but is unsigned and not installed or runtime-tested. PC imports
+below are optional developer capabilities, not completion of the mobile goal.
+
 The supported Apple Health export and manual Garmin-observation workflow is usable: canonical CSV validation and
 import, local SQLite storage, an offline CLI, and dated ChatGPT Project packs.
 Run `scripts/setup.ps1` and follow `docs/USE_NOW.md`.

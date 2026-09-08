@@ -1,5 +1,10 @@
 # OpenWear Coach
 
+**iPhone-first work in progress:** [OpenWear Check-in Shortcut](shortcuts/README.md)
+has generated source and a phone-only assembly guide. Signing, installation
+and native execution are not yet verified. The PC workflow below is optional
+and is not the intended daily phone experience.
+
 **Start here: [Use your Garmin personal coach now](docs/USE_NOW.md).**
 Import supported Apple Health XML or manually prepared Garmin observations, keep them locally, and generate
 a dated coaching pack for a ChatGPT Project. Includes a Windows setup script,

@@ -25,3 +25,4 @@ Status values: `backlog`, `in_progress`, `blocked`, `completed`.
 
 
 | EXPORT-001 | completed | root | Source/date-filtered Apple Health XML import | User safety-first choice | Defused XML, duplicate/overlap guards, dry run, docs and 6 tests; no account access |
+| PHONE-001 | in_progress | root | iPhone Shortcut source, Project prompt and on-device setup; owns shortcuts/ and phone docs | Apple Shortcuts signing or one-time on-phone assembly | No iPhone control or Apple signing runtime available; do not claim installed |

@@ -12,10 +12,11 @@ approval, Garmin login or unofficial account connector is part of this route.
 ## Next pickup
 
 1. Read STATUS.md.
-2. Read only updates/2026-09-07T1940Z-ready-local-workflow.md.
+2. Read only updates/2026-09-07-phone-shortcut-source.md.
 3. Run `git -c safe.directory=C:/Users/GANESH/open_source_projects/openwear-coach status -sb`.
-4. Follow docs/USE_NOW.md to import user-reviewed dated observations and build
-   a personal Project pack. Do not use synthetic demo records as user measurements.
+4. Continue iPhone Shortcut setup using shortcuts/README.md. The user's daily
+   workflow must not require Windows or a separate iPhone app. Generated source
+   is unsigned; installation and iPhone runtime are still unverified.
 
 ## Repository
 

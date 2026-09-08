@@ -1,0 +1,32 @@
+name: Sign iPhone Shortcut
+on:
+  push:
+    paths:
+      - 'shortcuts/**'
+      - '.github/workflows/shortcut.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sign:
+    # Standard public-repository runner; never a paid larger runner.
+    runs-on: macos-15
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and validate public workflow source
+        run: |
+          python3 shortcuts/build_shortcut.py
+          python3 -m unittest discover -s tests -p test_shortcut.py -v
+      - name: Sign with Apple's own tool
+        timeout-minutes: 2
+        run: |
+          mkdir -p dist/shortcut
+          /usr/bin/shortcuts sign --mode anyone --input 'shortcuts/OpenWear Check-in.unsigned.plist' --output 'dist/shortcut/OpenWear Check-in.shortcut'
+          test -s 'dist/shortcut/OpenWear Check-in.shortcut'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OpenWear-iPhone-Shortcut
+          path: dist/shortcut/OpenWear Check-in.shortcut
+          if-no-files-found: error
+          retention-days: 7
