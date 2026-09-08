@@ -64,3 +64,5 @@ Use `not exposed` rather than guessing unavailable values.
 
 | 2026-09-07 | root READY-001 | completed locally | current host model / effort not exposed | Handoff, status, one update; bounded source and test inspection | focused implementation and delivery | not exposed | 1 | 33 tests, setup, CLI demo, Apple XML safety and STDIO integration pass; no personal data used | Recommended Terra for final publishing; no exact token or savings claim |
 | 2026-09-07 | root PHONE-001 | awaiting iPhone setup | host model / effort not exposed | Handoff/status/one update, native-action metadata | bounded source generation | not exposed | 1 | Plist/static safety checks passed; native signing/install/runtime unavailable | Bounded follow-up setup fits Terra; do not invent token counts |
+
+| 2026-09-09 | root phone delivery/history | awaiting on-device setup | host model/effort not exposed | single handoff update, Shortcut source, archive schema only | bounded signing and validation | not exposed | 1 | 38 tests; two Apple signing attempts establish iCloud gate; private pack created | No token/cost savings invented; remaining setup fits Terra |

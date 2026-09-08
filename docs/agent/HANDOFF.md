@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-09-07 (Europe/London)
+Updated: 2026-09-09 (Europe/London)
 
 ## Goal and current result
 
@@ -12,7 +12,7 @@ approval, Garmin login or unofficial account connector is part of this route.
 ## Next pickup
 
 1. Read STATUS.md.
-2. Read only updates/2026-09-07-phone-shortcut-source.md.
+2. Read only updates/2026-09-09-phone-install-blocker.md.
 3. Run `git -c safe.directory=C:/Users/GANESH/open_source_projects/openwear-coach status -sb`.
 4. Continue iPhone Shortcut setup using shortcuts/README.md. The user's daily
    workflow must not require Windows or a separate iPhone app. Generated source

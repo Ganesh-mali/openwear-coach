@@ -86,6 +86,14 @@ measurements hidden**. Do not send an Apple Health export, password or token.
 
 ## Developer source and signing
 
+An official signing build was tried on GitHub's macOS runner. With binary
+`.shortcut` packaging, Apple rejected it because the runner was not signed
+into iCloud. The non-working hosted workflow has been removed. Do not enter
+Apple credentials into CI. On a Mac already signed into iCloud, run
+`sh shortcuts/sign-on-mac.sh` once, then transfer the signed file to your iPhone.
+This signing step sends only the public workflow definition to Apple, not
+your health history. A successful signature still requires a phone runtime check.
+
 `build_shortcut.py` produces `OpenWear Check-in.unsigned.plist`. Action metadata
 comes from documented/observed exports; native execution remains unverified.
 Apple provides `shortcuts sign` on macOS for signing an exported workflow;

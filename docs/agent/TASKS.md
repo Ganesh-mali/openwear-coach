@@ -25,4 +25,6 @@ Status values: `backlog`, `in_progress`, `blocked`, `completed`.
 
 
 | EXPORT-001 | completed | root | Source/date-filtered Apple Health XML import | User safety-first choice | Defused XML, duplicate/overlap guards, dry run, docs and 6 tests; no account access |
-| PHONE-001 | in_progress | root | iPhone Shortcut source, Project prompt and on-device setup; owns shortcuts/ and phone docs | Apple Shortcuts signing or one-time on-phone assembly | No iPhone control or Apple signing runtime available; do not claim installed |
+| PHONE-001 | in_progress | root | iPhone Shortcut source, Project prompt and on-device setup; owns shortcuts/ and phone docs | Apple Shortcuts signing or one-time on-phone assembly | Hosted Apple signing attempted: iCloud sign-in required; user chose on-iPhone assembly with guidance; do not claim installed |
+
+| HISTORY-001 | completed | root | Minimal history from official Garmin export | User archive | Private pack prepared; sensitive non-coaching data excluded; 38 tests pass |
